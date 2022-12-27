@@ -10,8 +10,7 @@ import Blog from '../artifacts/contracts/Blog.sol/Blog.json';
 import Image from 'next/image';
 
 const client = new Web3Storage({
-  token:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDE2ZjIzODc3MWM5QjFmYzVBMDgxQWIwZjk4ZTlEYThiRUQwQzIzNTYiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzAyODEzMzg3OTUsIm5hbWUiOiJ3ZWIzLWJsb2cifQ.9yuIjoKD14JyfFRxaqA6asFe0c--dcDCh7MUZCgzV6E',
+  token: process.env.WEB3STORAGE_TOKEN,
 });
 
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
