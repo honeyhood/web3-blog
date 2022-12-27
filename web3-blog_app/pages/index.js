@@ -8,6 +8,8 @@ import { contractAddress, ownerAddress } from '../config';
 import Blog from '../artifacts/contracts/Blog.sol/Blog.json';
 import Image from 'next/image';
 
+const { ENVIRONMENT, API_URL } = process.env;
+
 export default function Home(props) {
   const { posts } = props;
   const account = useContext(AccountContext);
@@ -57,19 +59,14 @@ export default function Home(props) {
 
 export async function getServerSideProps() {
   let provider;
-  if (process.env.ENVIRONMENT === 'local') {
+  if (ENVIRONMENT === 'local') {
     provider = new ethers.providers.JsonRpcProvider('HTTP://127.0.0.1:8545');
-  } else if (process.env.ENVIRONMENT === 'testnet') {
-    provider = new ethers.providers.JsonRpcProvider(
-      'https://rpc-mumbai.matic.today'
-    );
-  } else {
-    provider = new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/');
+  } else if (ENVIRONMENT === 'testnet') {
+    provider = new ethers.providers.JsonRpcProvider(API_URL);
   }
 
   const contract = new ethers.Contract(contractAddress, Blog.abi, provider);
   const data = await contract.fetchPosts();
-  console.log(JSON.stringify(data));
   return {
     props: {
       posts: JSON.parse(JSON.stringify(data)),
@@ -129,4 +126,5 @@ const arrow = css`
 
 const smallArrow = css`
   width: 25px;
+  margin: 25px;
 `;

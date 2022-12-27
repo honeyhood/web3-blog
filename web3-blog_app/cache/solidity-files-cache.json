@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/centrcyclona/Developer/web3-blog/contracts/Blog.sol": {
+    "/Users/centrcyclona/Developer/web3-blog/web3-blog_app/contracts/Blog.sol": {
       "lastModificationDate": 1669815417185,
       "contentHash": "d927e5fb68df639e6e99cebaf2338744",
       "sourceName": "contracts/Blog.sol",
@@ -39,7 +39,7 @@
         "Blog"
       ]
     },
-    "/Users/centrcyclona/Developer/web3-blog/node_modules/hardhat/console.sol": {
+    "/Users/centrcyclona/Developer/web3-blog/web3-blog_app/node_modules/hardhat/console.sol": {
       "lastModificationDate": 1669738079203,
       "contentHash": "4ff3cd2f6272c9a6516e9ee4f2b967d3",
       "sourceName": "hardhat/console.sol",
@@ -74,7 +74,7 @@
         "console"
       ]
     },
-    "/Users/centrcyclona/Developer/web3-blog/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
+    "/Users/centrcyclona/Developer/web3-blog/web3-blog_app/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
       "lastModificationDate": 1669738084494,
       "contentHash": "74654e3ae5d7f39555055dfe244dab7a",
       "sourceName": "@openzeppelin/contracts/utils/Counters.sol",

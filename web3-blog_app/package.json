@@ -15,6 +15,7 @@
     "@openzeppelin/contracts": "^4.8.0",
     "@walletconnect/web3-provider": "^1.8.0",
     "chai": "^4.3.7",
+    "dotenv": "^16.0.3",
     "easymde": "^2.18.0",
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.5",
@@ -27,6 +28,7 @@
     "react-dom": "18.2.0",
     "react-markdown": "^8.0.3",
     "react-simplemde-editor": "^5.2.0",
+    "web3.storage": "^4.4.0",
     "web3modal": "^1.9.10"
   },
   "devDependencies": {

@@ -1,16 +1,18 @@
-import { useState, useRef, useEffect } from 'react'; // new
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { css } from '@emotion/css';
 import { ethers } from 'ethers';
-import { create } from 'ipfs-http-client';
-
+import { Web3Storage } from 'web3.storage';
 import { contractAddress } from '../config';
 
 import Blog from '../artifacts/contracts/Blog.sol/Blog.json';
 import Image from 'next/image';
 
-const client = create('https://ipfs.infura.io:5001/api/v0');
+const client = new Web3Storage({
+  token:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDE2ZjIzODc3MWM5QjFmYzVBMDgxQWIwZjk4ZTlEYThiRUQwQzIzNTYiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzAyODEzMzg3OTUsIm5hbWUiOiJ3ZWIzLWJsb2cifQ.9yuIjoKD14JyfFRxaqA6asFe0c--dcDCh7MUZCgzV6E',
+});
 
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
   ssr: false,
@@ -22,6 +24,7 @@ function CreatePost() {
   const [post, setPost] = useState(initialState);
   const [image, setImage] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
 
   const fileRef = useRef(null);
   const { title, content } = post;
@@ -33,14 +36,15 @@ function CreatePost() {
     }, 500);
   }, []);
 
-  function onChange(e) {
-    setPost(() => ({ ...post, [e.target.name]: e.target.value }));
-  }
-
   async function savePostToIpfs() {
     try {
-      const added = await client.add(JSON.stringify(post));
-      return added.path;
+      const blob = new Blob([JSON.stringify(post)], {
+        type: 'application/json',
+      });
+      const filePost = [new File([blob], 'post')];
+      const added = await client.put(filePost, { wrapWithDirectory: false });
+      console.log('stored files with cid:', added);
+      return added;
     } catch (err) {
       console.log('error: ', err);
     }
@@ -69,11 +73,13 @@ function CreatePost() {
   }
 
   async function handleFileChange(e) {
-    const uploadedFile = e.target.files[0];
+    const uploadedFile = e.target.files;
     if (!uploadedFile) return;
-    const added = await client.add(uploadedFile);
-    setPost((state) => ({ ...state, coverImage: added.path }));
-    setImage(uploadedFile);
+    setImageLoading(true);
+    const added = await client.put(uploadedFile, { wrapWithDirectory: false });
+    setPost((state) => ({ ...state, coverImage: added }));
+    setImage(uploadedFile[0]);
+    setImageLoading(false);
   }
 
   function triggerOnChange() {
@@ -82,15 +88,18 @@ function CreatePost() {
 
   return (
     <div className={container}>
+      {imageLoading && <p>Loading...</p>}
       {image && (
         <Image
           className={coverImageStyle}
           src={URL.createObjectURL(image)}
           alt="postImage"
+          width={800}
+          height={500}
         />
       )}
       <input
-        onChange={onChange}
+        onChange={(e) => setPost({ ...post, title: e.target.value })}
         name="title"
         placeholder="Give it a title ..."
         value={post.title}
